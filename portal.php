@@ -109,8 +109,8 @@
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">
-          	<li class="dropdown">
-          		<a href="logout.php" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="<?php echo $_SESSION['picture'];?>" height="32px" width="32px" class="img-circle"> ログアウト</a>
+          	<li>
+          		<a href="logout.php" role="button" aria-haspopup="true" aria-expanded="false"><img src="<?php echo $_SESSION['picture'];?>" height="32px" width="32px" class="img-circle"> ログアウト</a>
             </li>
           </ul>
         </nav>
