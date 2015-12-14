@@ -5,12 +5,9 @@
 	session_start();
 
 	// 対象月 ... defaultは現在時刻の月。$_POST['year'], $_POST['month] がある場合はその月。
-	if (isset($_POST['yearmonth'])) {
-		$year = mb_substr($_POST['yearmonth'], 0, mb_strpos($_POST['yearmonth'], '年'));
-		$month = mb_substr($_POST['yearmonth'],
-				mb_strpos($_POST['yearmonth'], '年') + 1,
-				mb_strpos($_POST['yearmonth'], '月') - mb_strpos($_POST['yearmonth'], '年') - 1
-				);
+	if (isset($_POST['year']) && isset($_POST['month'])) {
+		$year = $_POST['year'];
+		$month = sprintf("%02d",$_POST['month']);
 	} 
 	// $_SESSION['year'], $_SESSION['month']がある場合はその月
 	elseif (isset($_SESSION['year']) && isset($_SESSION['month'])) {
@@ -122,20 +119,24 @@
       </div>
     
 	<div class="row">
-	  <form action="./" method="post">
-	  <div class="col-sm-6"></div>
-	  <div class="form-group col-sm-6">
+	  <form action="./" method="post" data-toggle="validator">
+	  <div class="col-sm-4"></div>
+	  <div class="form-group col-sm-8">
 	    <div class="input-group">
-		    <input type="text" class="form-control" id="YearMonth" name="yearmonth" placeholder="YYYY年MM月" value="<?php echo $year . '年' . $month . '月' ;?>">
+		    <input type="number" class="form-control" id="Year" name="year" placeholder="YYYY" value="<?php echo $year;?>" min="1970" max="9999" required>
+		    <div class="input-group-addon">年</div>
+		    <input type="number" class="form-control" id="Month" name="month" placeholder="MM" value="<?php echo $month;?>" min="1" max="12" required>
+		    <div class="input-group-addon">月</div>
 		    <span class="input-group-btn">
 	    	  <button type="submit" class="btn btn-default">表示する月の変更 <span class="glyphicon glyphicon-repeat" aria-hidden="true"></button>
 	  		</span>
 	  	</div>
+	  	<div class="help-block with-errors"></div>
 	  </div>
 	  </form>
 	</div>
 
-	  <form action="./edit.php" method="post">
+	  <form action="./edit.php" method="post" data-toggle="validator">
       <table class="table table-striped">
       	<tr>
       		<th><span class="glyphicon glyphicon-check" aria-hidden="true"></span></th>
@@ -148,7 +149,7 @@
       <?php foreach ($attendance as $row) { ?>
       	<tr>
       		<td><input type="radio" name="date" id="date<?php echo $row['day']; ?>"
-      				value="<?php echo $year . $month . sprintf('%\'.02d',$row['day']); ?>"></td>
+      				value="<?php echo $year . $month . sprintf('%\'.02d',$row['day']); ?>" required></td>
       		<td><?php echo $row['day']; ?></td>
       		<td><?php echo $row['attendanceCustomerOn']; ?></td>
       		<td><?php echo $row['attendanceCustomerOff']; ?></td>
@@ -171,8 +172,9 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="jquery/jquery.min.js"></script>
     <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bootstrap-validator/dist/validator.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="bootstrap/docs/assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>

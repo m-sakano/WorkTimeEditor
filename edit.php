@@ -70,8 +70,8 @@
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">
-          	<li class="dropdown">
-          		<a href="logout.php" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="<?php echo $_SESSION['picture'];?>" height="32px" width="32px" class="img-circle"> ログアウト</a>
+          	<li>
+          		<a href="logout.php" role="button" aria-haspopup="true" aria-expanded="false"><img src="<?php echo $_SESSION['picture'];?>" height="32px" width="32px" class="img-circle"> ログアウト</a>
             </li>
           </ul>
         </nav>
@@ -83,26 +83,28 @@
       </div>
 
       <h3>レコードの追加と更新</h3>
-      <p class="help-block">登録済みのレコードと同じ時刻を入力すると上書き更新になります。</p>
-      <form action="./update.php" method="post">
+      <p class="help-block">登録済みのレコードと同じ時刻を入力すると上書き更新になります。*は必須項目です。</p>
+      <form action="./update.php" method="post" data-toggle="validator">
       <input type="hidden" name="Date" value="<?php echo $myDate;?>">
       <div class="row">
       	<div class="col-sm-2">
 		  <div class="form-group">
-		    <label for="Hour">時</label>
-		    <input type="text" class="form-control" id="Hour" name="Hour" placeholder="0-23">
+		    <label for="Hour">時*</label>
+		    <input type="number" class="form-control" id="Hour" name="Hour" placeholder="0-23" min="0" max="23" required>
+		    <div class="help-block with-errors"></div>
 		  </div>
       	</div>
       	<div class="col-sm-2">
 		  <div class="form-group">
-		    <label for="Minute">分</label>
-		    <input type="text" class="form-control" id="Minute" name="Minute" placeholder="0-59">
+		    <label for="Minute">分*</label>
+		    <input type="number" class="form-control" id="Minute" name="Minute" placeholder="0-59" min="0" max="59" required>
+		    <div class="help-block with-errors"></div>
 		  </div>
       	</div>
       	<div class="col-sm-3">
 		  <div class="form-group">
-		    <label for="Attendance">ステータス</label>
-		    <select class="form-control" id="Attendance" name="Attendance">
+		    <label for="Attendance">ステータス*</label>
+		    <select class="form-control" id="Attendance" name="Attendance" required>
 		      <option value=""></option>
 			  <option value="案件先出社">案件先出社</option>
 			  <option value="案件先退社">案件先退社</option>
@@ -122,8 +124,9 @@
       </form>
 
       <h3>レコードの確認と削除</h3>
-	  <form action="./delete.php" method="post">
+	  <form action="./delete.php" method="post" data-toggle="validator">
 	  <input type="hidden" name="Date" value="<?php echo $myDate;?>">
+	  <div class="form-group">
       <table class="table table-striped">
       	<tr>
       		<th><span class="glyphicon glyphicon-check" aria-hidden="true"></span></th>
@@ -135,14 +138,15 @@
       <?php foreach ($result as $item) { ?>
       	<tr>
       		<td><input type="radio" name="UnixTime" id="<?php echo $item['UnixTime']['N']; ?>"
-      				value="<?php echo $item['UnixTime']['N']; ?>"></td>
+      				value="<?php echo $item['UnixTime']['N']; ?>" required></td>
       		<td><?php echo date('H:i', $item['UnixTime']['N']); ?></td>
       		<td><?php echo $item['Attendance']['S']; ?></td>
       		<td><?php echo $item['Description']['S']; ?></td>
       	</tr>
       <?php }} ?>
       </table>
-      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+      </div>
+      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" <?php if (iterator_count($result) == 0) { echo 'disabled'; }?>>
         選択したレコードの削除 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 	  </button>
 	  
@@ -194,7 +198,8 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="jquery/jquery.min.js"></script>
     <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bootstrap-validator/dist/validator.min.js"></script>
   </body>
 </html>
