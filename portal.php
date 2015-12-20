@@ -64,6 +64,15 @@
 							break;
 						default:
 					}
+					if (isset($attendance[$i]['description'])) {
+						if (isset($item['Description']['S'])) {
+							$attendance[$i]['description'] .= '<br>' . $item['Description']['S'];
+						}
+					} else {
+						if (isset($item['Description']['S'])) {
+							$attendance[$i]['description'] =  $item['Description']['S'];
+						}
+					}
 				}
 			}
 		}
@@ -145,6 +154,7 @@
       		<th>案件先退社</th>
       		<th>自社出社</th>
       		<th>自社退社</th>
+      		<th>備考</th>
       	</tr>
       <?php foreach ($attendance as $row) { ?>
       	<tr>
@@ -155,6 +165,7 @@
       		<td><?php echo $row['attendanceCustomerOff']; ?></td>
       		<td><?php echo $row['attendanceOn']; ?></td>
       		<td><?php echo $row['attendanceOff']; ?></td>
+      		<td><?php echo $row['description']; ?></td>
       	</tr>
       <?php } ?>
       </table>
