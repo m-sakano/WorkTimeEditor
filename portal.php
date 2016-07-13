@@ -28,7 +28,8 @@
 		);
 	
 
-	for ($i = 1; $i < (int)date('d',strtotime('month +1 ' . $year . $month) - 24*60*60); $i++) {
+	for ($i = 1; true; $i++) {
+		if ($i > (int)date('d',strtotime('last day of ' . $year . $month . '01'))) break;
 		$attendance[$i]['day'] = date('d D', strtotime($year . $month . sprintf('%\'.02d',$i) ));
 		if (iterator_count($result) > 0) {
 			foreach ($result as $item) {
